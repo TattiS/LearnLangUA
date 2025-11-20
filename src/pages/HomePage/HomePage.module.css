@@ -1,0 +1,12 @@
+.heroContentWrapper {
+  width: 720px;
+  height: 530px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  flex-shrink: 0;
+  background-color: var(--color-bg, #f8f8f8);
+  color: var(--color-text, #121417);
+  border-radius: 30px;
+  padding: 64px 98px;
+}

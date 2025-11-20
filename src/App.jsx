@@ -1,12 +1,26 @@
-// import { useState } from "react";
+import { Suspense } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { Provider, useSelector } from "react-redux";
+import store from "./redux/store";
+import Loader from "./components/Loader/Loader";
+import AppRoutes from "./routes/AppRoutes";
 import "./App.css";
 
-function App() {
+export default function App() {
+  const isRegisterModalOpen = useSelector(
+    (state) => state.auth.isRegisterModalOpen
+  );
+  const isLoginModalOpen = useSelector((state) => state.auth.isLoginModalOpen);
+
   return (
-    <>
-      <div></div>
-    </>
+    <Provider store={store}>
+      <BrowserRouter>
+        {isRegisterModalOpen && <RegisterModal />}
+        {isLoginModalOpen && <LoginModal />}
+        <Suspense fallback={<Loader />}>
+          <AppRoutes />
+        </Suspense>
+      </BrowserRouter>
+    </Provider>
   );
 }
-
-export default App;
