@@ -7,16 +7,13 @@ import AppRoutes from "./routes/AppRoutes";
 import "./App.css";
 
 export default function App() {
-  const isRegisterModalOpen = useSelector(
-    (state) => state.auth.isRegisterModalOpen
-  );
-  const isLoginModalOpen = useSelector((state) => state.auth.isLoginModalOpen);
+  const { isOpen, type } = useSelector((state) => state.auth.modal);
 
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {isRegisterModalOpen && <RegisterModal />}
-        {isLoginModalOpen && <LoginModal />}
+        {isOpen && type === "register" && <RegisterModal />}
+        {isOpen && type === "login" && <LoginModal />}
         <Suspense fallback={<Loader />}>
           <AppRoutes />
         </Suspense>
