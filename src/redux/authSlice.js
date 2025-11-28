@@ -4,9 +4,9 @@ import { registerUser, loginUser, logoutUser } from "../firebase/authService";
 const normalizeUser = (user) =>
   user
     ? {
-        id: user.id,
+        id: user.uid,
         email: user.email,
-        nick: user.nick || null,
+        nick: user.displayName || null,
       }
     : null;
 
@@ -23,11 +23,11 @@ export const registerThunk = createAsyncThunk(
 
 export const loginThunk = createAsyncThunk(
   "auth/login",
-  async (form, { rejectedWithValue }) => {
+  async (form, { rejectWithValue }) => {
     try {
       return normalizeUser(await loginUser(form));
     } catch (error) {
-      return rejectedWithValue(error.code || "auth/login_failed");
+      return rejectWithValue(error.code || "auth/login_failed");
     }
   }
 );
@@ -60,7 +60,8 @@ const authSlice = createSlice({
     },
     openModal: (state, { payload }) => {
       state.modal.isOpen = true;
-      state.modal.type = payload;
+      state.modal.type =
+        typeof payload === "string" ? payload : payload?.type || null;
     },
     closeModal: (state) => {
       state.modal.isOpen = false;
@@ -76,6 +77,8 @@ const authSlice = createSlice({
       .addCase(registerThunk.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.loading = false;
+        state.modal.isOpen = false;
+        state.modal.type = null;
       })
       .addCase(registerThunk.rejected, (state, { payload }) => {
         state.loading = false;
@@ -88,6 +91,8 @@ const authSlice = createSlice({
       .addCase(loginThunk.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.loading = false;
+        state.modal.isOpen = false;
+        state.modal.type = null;
       })
       .addCase(loginThunk.rejected, (state, { payload }) => {
         state.loading = false;
@@ -100,6 +105,8 @@ const authSlice = createSlice({
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
         state.loading = false;
+        state.modal.isOpen = false;
+        state.modal.type = null;
       })
       .addCase(logoutThunk.rejected, (state, { payload }) => {
         state.loading = false;

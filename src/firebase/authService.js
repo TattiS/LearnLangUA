@@ -11,11 +11,12 @@ export const registerUser = async ({ email, psw, nick }) => {
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, psw);
     if (nick) {
-      await updateProfile(user, { nick });
+      await updateProfile(user, { displayName: nick });
     }
     return user;
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error(error.message || "Error registering user");
+    throw error;
   }
 };
 
@@ -24,11 +25,19 @@ export const loginUser = async ({ email, psw }) => {
     const { user } = await signInWithEmailAndPassword(auth, email, psw);
     return user;
   } catch (error) {
-    console.error("Error logging in user:", error);
+    console.error(error.message || "Error logging in user");
+    throw error;
   }
 };
 
-export const logoutUser = () => signOut(auth);
+export const logoutUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error(error.message || "Error logging out user");
+    throw error;
+  }
+};
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);

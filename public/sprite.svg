@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="icon-close" viewBox="0 0 32 32">
+  <path d="M24 8L8 24" stroke="#121417" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 8L24 24" stroke="#121417" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
 <symbol id="icon-chevron-down" viewBox="0 0 20 20">
 
 <path d="M5 7.5L10 12.5L15 7.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
