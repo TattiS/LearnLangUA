@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage/HomePage";
-// import TeachersPage from "../pages/TeachersPage/";
-// import FavoritesPage from "../pages/FavoritesPage";
+import TeachersPage from "../pages/TeachersPage/TeachersPage";
+import FavoritesPage from "../pages/FavoritesPage/FavoritesPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import Layout from "../components/Layout/Layout";
 import PrivateRoute from "./PrivateRoute/";
@@ -13,7 +13,7 @@ const AppRoutes = () => {
         <Route index element={<HomePage />} />
         <Route path="/teachers" element={<TeachersPage />} />
         <Route
-          path="/favourites"
+          path="/favorites"
           element={
             <PrivateRoute>
               <FavoritesPage />

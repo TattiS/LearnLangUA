@@ -1,12 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
-import { showLoginModal } from "../redux/auth/authSlice";
+import { useEffect } from "react";
+import { openModal } from "../redux/authSlice.js";
 
 const PrivateRoute = ({ children }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => Boolean(state.auth?.user));
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(openModal("login"));
+    }
+  }, [isAuthenticated, dispatch]);
   if (!isAuthenticated) {
-    dispatch(showLoginModal(true));
     return null;
   }
   return children;

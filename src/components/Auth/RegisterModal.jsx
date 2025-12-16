@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
-import RegisterForm from "./RegisterForm/RegisterForm";
+import RegisterForm from "./RegisterForm";
 import { closeModal, openModal } from "../../redux/authSlice";
 
 const RegisterModal = () => {
