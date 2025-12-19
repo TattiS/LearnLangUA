@@ -1,14 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { registerUser, loginUser, logoutUser } from "../firebase/authService";
-
-const normalizeUser = (user) =>
-  user
-    ? {
-        id: user.uid,
-        email: user.email,
-        nick: user.displayName || null,
-      }
-    : null;
+import { normalizeUser } from "./normalizeUser";
 
 export const registerThunk = createAsyncThunk(
   "auth/register",
@@ -32,9 +24,17 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
-export const logoutThunk = createAsyncThunk("auth/logout", async () => {
-  await logoutUser();
-});
+export const logoutThunk = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectedWithValue }) => {
+    try {
+      await logoutUser();
+      return true;
+    } catch (error) {
+      return rejectedWithValue(error.code || "auth/logout_failed");
+    }
+  }
+);
 
 const initialState = {
   user: null,

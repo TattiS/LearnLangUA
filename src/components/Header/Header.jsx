@@ -10,6 +10,9 @@ const Header = () => {
   const signupBtnClickHandler = () => {
     dispatch(openModal("register"));
   };
+  const logoutBtnClickHandler = () => {
+    dispatch(openModal("register"));
+  };
   const user = useSelector((state) => state.auth.user);
   return (
     <header>
@@ -74,7 +77,13 @@ const Header = () => {
           </svg>
           <span className={css.loginText}>Log in</span>
         </button>
-
+        <button
+          type="button"
+          className={css.signup}
+          onClick={logoutBtnClickHandler}
+        >
+          Logout
+        </button>
         <button
           type="button"
           className={css.signup}
