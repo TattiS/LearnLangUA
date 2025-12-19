@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { openModal } from "../../redux/authSlice.js";
+import { openModal, logoutThunk } from "../../redux/authSlice.js";
 import css from "./Header.module.css";
 const Header = () => {
   const dispatch = useDispatch();
@@ -11,15 +11,16 @@ const Header = () => {
     dispatch(openModal("register"));
   };
   const logoutBtnClickHandler = () => {
-    dispatch(openModal("register"));
+    dispatch(logoutThunk());
   };
   const user = useSelector((state) => state.auth.user);
+
   return (
     <header>
       <div className={css.logoWrapper}>
         <Link to="/" className={css.brand} aria-label="LearnLingo Home">
           <svg className={css.logo} width="28" height="28" viewBox="0 0 28 28">
-            <use href="/favicon.png" />
+            <use href="/sprite.svg#icon-icon" />
           </svg>
           <span className={css.logoText}>LearnLangUA</span>
         </Link>
@@ -62,35 +63,40 @@ const Header = () => {
         </ul>
       </nav>
       <div className={css.actions}>
-        <button
-          type="button"
-          className={css.login}
-          onClick={loginBtnClickHandler}
-        >
-          <svg
-            className={css.loginIcon}
-            width="18"
-            height="18"
-            aria-hidden="true"
+        {user ? (
+          <button
+            type="button"
+            className={css.signup}
+            onClick={logoutBtnClickHandler}
           >
-            <use href="/sprite.svg#icon-login" />
-          </svg>
-          <span className={css.loginText}>Log in</span>
-        </button>
-        <button
-          type="button"
-          className={css.signup}
-          onClick={logoutBtnClickHandler}
-        >
-          Logout
-        </button>
-        <button
-          type="button"
-          className={css.signup}
-          onClick={signupBtnClickHandler}
-        >
-          Registration
-        </button>
+            Logout
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              className={css.login}
+              onClick={loginBtnClickHandler}
+            >
+              <svg
+                className={css.loginIcon}
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <use href="/sprite.svg#icon-login" />
+              </svg>
+              <span className={css.loginText}>Log in</span>
+            </button>
+            <button
+              type="button"
+              className={css.signup}
+              onClick={signupBtnClickHandler}
+            >
+              Registration
+            </button>
+          </>
+        )}
       </div>
     </header>
   );

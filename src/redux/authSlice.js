@@ -26,12 +26,12 @@ export const loginThunk = createAsyncThunk(
 
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
-  async (_, { rejectedWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await logoutUser();
       return true;
     } catch (error) {
-      return rejectedWithValue(error.code || "auth/logout_failed");
+      return rejectWithValue(error.code || "auth/logout_failed");
     }
   }
 );
@@ -74,8 +74,8 @@ const authSlice = createSlice({
         state.error = null;
         state.loading = true;
       })
-      .addCase(registerThunk.fulfilled, (state, { payload }) => {
-        state.user = payload;
+      .addCase(registerThunk.fulfilled, (state /*, { payload }*/) => {
+        // state.user = payload;
         state.loading = false;
         state.modal.isOpen = false;
         state.modal.type = null;
@@ -88,8 +88,8 @@ const authSlice = createSlice({
         state.error = null;
         state.loading = true;
       })
-      .addCase(loginThunk.fulfilled, (state, { payload }) => {
-        state.user = payload;
+      .addCase(loginThunk.fulfilled, (state /*, { payload }*/) => {
+        //state.user = payload;
         state.loading = false;
         state.modal.isOpen = false;
         state.modal.type = null;
@@ -103,7 +103,7 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(logoutThunk.fulfilled, (state) => {
-        state.user = null;
+        // state.user = null;
         state.loading = false;
         state.modal.isOpen = false;
         state.modal.type = null;

@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -16,17 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-let analytics = null;
-
-isSupported().then((supported) => {
-  if (supported) {
-    analytics = getAnalytics(app);
-    console.log("Analytics: ", analytics);
-  } else {
-    console.log("Analytics not supported in this environment.");
-  }
-});
-
 console.log("Firebase initialized:", app);
 
-export { app, auth, analytics };
+export { app, auth };

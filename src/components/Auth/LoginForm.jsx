@@ -89,7 +89,7 @@ const LoginForm = ({ onSubmitSuccess }) => {
           className={css.submitBtn}
           disabled={loading || isSubmitting}
         >
-          {loading || isSubmitting ? "Creating..." : "Sign up"}
+          {loading || isSubmitting ? "Checking..." : "Sign in"}
         </button>
       </div>
     </form>
