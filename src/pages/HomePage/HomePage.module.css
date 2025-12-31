@@ -1,3 +1,16 @@
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+.heroWrapper {
+  width: 1312px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
 .heroContentWrapper {
   width: 720px;
   height: 530px;
@@ -9,4 +22,59 @@
   color: var(--color-text, #121417);
   border-radius: 30px;
   padding: 64px 98px;
+}
+
+.heroImgWrapper {
+  width: 568px;
+  height: 530px;
+  display: flex;
+  justify-content: center;
+  align-items: bottom;
+  padding: 80px 89px 0 88px;
+  background-color: var(--color-accent, #fbe9ba);
+  border-radius: 30px;
+}
+.stats {
+  width: 1312px;
+  height: 116px;
+  display: flex;
+  justify-content: center;
+  padding: 40px auto;
+  border-radius: 30px;
+  border: 1.5px dashed var(--color-main, #f4c550);
+}
+.statsList {
+  display: flex;
+  flex-direction: row;
+  column-gap: 100px;
+  margin: 40px auto;
+}
+.statItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 2px;
+}
+.statValue {
+  color: var(--color-text, #121417);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.56px;
+}
+.statLabel {
+  width: 96px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.29;
+  letter-spacing: -0.28px;
+  color: var(--color-text-light, #121417cc);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  overflow: hidden;
 }

@@ -80,11 +80,11 @@ const Header = () => {
             >
               <svg
                 className={css.loginIcon}
-                width="18"
-                height="18"
+                width="20"
+                height="20"
                 aria-hidden="true"
               >
-                <use href="/sprite.svg#icon-login" />
+                <use href="/sprite.svg#icon-log-in" />
               </svg>
               <span className={css.loginText}>Log in</span>
             </button>

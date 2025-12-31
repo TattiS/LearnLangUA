@@ -1,0 +1,65 @@
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin: 20px 0px;
+  color: var(--color-text, #121417);
+  font-family: Roboto;
+}
+.logoWrapper {
+  color: #121417;
+  font-family: Roboto;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.4px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.menu {
+  display: flex;
+  flex-flow: row;
+  align-items: flex-start;
+  gap: 28px;
+  color: #121417;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.actions {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: 16px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.signup {
+  display: flex;
+  padding: 14px 39px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  background: var(--color-text, #121417);
+  color: var(--color-bg-white, #ffffff);
+}
+.login {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text, #121417);
+}
+.loginIcon {
+  stroke: var(--color-btn-active, #f4c550);
+}

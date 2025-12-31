@@ -75,6 +75,7 @@ img {
 }
 
 button {
+  background: none;
   cursor: pointer;
   font-family: inherit;
   border: none;
