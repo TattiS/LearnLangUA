@@ -1,10 +1,10 @@
+import clsx from "clsx";
 import css from "./LoginForm.module.css";
 import loginSchema from "./loginSchema";
 import { loginThunk } from "../../redux/authSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 
 const LoginForm = ({ onSubmitSuccess }) => {
   const dispatch = useDispatch();
@@ -15,16 +15,12 @@ const LoginForm = ({ onSubmitSuccess }) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setFocus,
+    // setFocus,
   } = useForm({
-    mode: "onTouched",
+    mode: "all",
     resolver: yupResolver(loginSchema),
     defaultValues: { email: "", psw: "" },
   });
-
-  useEffect(() => {
-    setFocus("email");
-  }, [setFocus]);
 
   const onSubmit = async (data) => {
     try {
@@ -42,47 +38,52 @@ const LoginForm = ({ onSubmitSuccess }) => {
       aria-labelledby="login-title"
       noValidate
     >
-      <h2 id="login-title" className={css.title}>
-        Log In
-      </h2>
-      <p className={css.text}>
-        Welcome back! Please enter your credentials to access your account and
-        continue your search for an teacher.
-      </p>
-      <label className={css.label}>Email</label>
-      <input
-        className={css.input}
-        type="email"
-        placeholder="Email"
-        autoComplete="email"
-        {...register("email")}
-        aria-invalid={!!errors.email || undefined}
-        aria-describedby={errors.email ? "err-email" : undefined}
-      />
-      {errors.email && (
-        <p id="err-email" className={css.err}>
-          {errors.email.message}
+      <div className={css.formTitleWrapper}>
+        <h2 id="login-title" className={css.formTitle}>
+          Log In
+        </h2>
+        <p className={css.formTxt}>
+          Welcome back! Please enter your credentials to access your account and
+          continue your search for an teacher.
         </p>
-      )}
+      </div>
+      <div className={css.formInputGroup}>
+        <div className={css.fieldWrapper}>
+          <label className={clsx(css.formLbl, css.visuallyHidden)}>Email</label>
+          <input
+            className={clsx(css.formInput, errors.email && css.inputError)}
+            type="email"
+            placeholder="Email"
+            autoComplete="email"
+            {...register("email")}
+            aria-invalid={!!errors.email || undefined}
+            aria-describedby={errors.email ? "err-email" : undefined}
+          />
 
-      <label className={css.label}>Password</label>
-      <input
-        className={css.input}
-        type="password"
-        placeholder="Password"
-        autoComplete="new-password"
-        {...register("psw")}
-        aria-invalid={!!errors.psw || undefined}
-        aria-describedby={errors.psw ? "err-psw" : undefined}
-      />
-      {errors.psw && (
-        <p id="err-psw" className={css.err}>
-          {errors.psw.message}
-        </p>
-      )}
+          <p id="err-email" className={css.formErr}>
+            {errors.email?.message || "\u00A0"}
+          </p>
+        </div>
+        <div className={css.fieldWrapper}>
+          <label className={clsx(css.formLbl, css.visuallyHidden)}>
+            Password
+          </label>
+          <input
+            className={clsx(css.formInput, errors.psw && css.inputError)}
+            type="password"
+            placeholder="Password"
+            autoComplete="new-password"
+            {...register("psw")}
+            aria-invalid={!!errors.psw || undefined}
+            aria-describedby={errors.psw ? "err-psw" : undefined}
+          />
 
-      {serverError && <p className={css.errGlobal}>{String(serverError)}</p>}
-
+          <p id="err-psw" className={css.formErr}>
+            {errors.psw?.message || "\u00A0"}
+          </p>
+        </div>
+        {serverError && <p className={css.errGlobal}>{String(serverError)}</p>}
+      </div>
       <div className={css.actions}>
         <button
           type="submit"
