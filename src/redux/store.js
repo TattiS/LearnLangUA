@@ -11,6 +11,9 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "./authSlice.js";
+import teachersReducer from "./teachersSlice.js";
+import filtersMetaReducer from "./filtersMetaSlice.js";
+import filtersReducer from "./filtersSlice.js";
 
 const authPersistConfig = {
   key: "auth",
@@ -20,6 +23,9 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
+  teachers: teachersReducer,
+  filtersMeta: filtersMetaReducer,
+  filters: filtersReducer,
 });
 
 export const store = configureStore({

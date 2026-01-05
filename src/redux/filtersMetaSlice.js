@@ -26,11 +26,12 @@ export const fetchFiltersMeta = createAsyncThunk(
     }
 
     const data = result.val();
+    console.log("Fetched filters meta:", data);
 
     return {
-      languages: data.languages || [],
-      levels: data.levels || [],
-      prices: data.prices || [],
+      languages: data[0].languages || [],
+      levels: data[0].levels || [],
+      prices: data[0].prices || [],
     };
   }
 );
@@ -38,6 +39,7 @@ export const fetchFiltersMeta = createAsyncThunk(
 const filtersMetaSlice = createSlice({
   name: "filtersMeta",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchFiltersMeta.pending, (state) => {
