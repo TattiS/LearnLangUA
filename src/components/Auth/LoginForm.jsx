@@ -6,11 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { selectAuthLoading, selectAuthError } from "../../redux/authSelectors";
 
 const LoginForm = ({ onSubmitSuccess }) => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.auth.loading);
-  const serverError = useSelector((state) => state.auth.error);
+  const loading = useSelector(selectAuthLoading);
+  const serverError = useSelector(selectAuthError);
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,

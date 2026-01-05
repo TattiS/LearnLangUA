@@ -1,4 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  ref,
+  get,
+  query,
+  orderByChild,
+  orderByKey,
+  equalTo,
+  endAt,
+  startAfter,
+  limitToFirst,
+} from "firebase/database";
+import { database } from "../firebase/firebase";
 
 const initialState = {
   teachers: [],
@@ -6,18 +18,107 @@ const initialState = {
   hasMore: true,
   loading: false,
   error: null,
-  filters: {
-    language: null,
-    level: null,
-    price: null,
-  },
+};
+
+const PAGE_LIMIT = 4;
+
+const buildTeachersQuery = ({ activeFilter, value, lastKey = null }) => {
+  const teachersRef = ref(database, "teachers");
+
+  if (!activeFilter) {
+    return query(
+      teachersRef,
+      orderByKey(),
+      lastKey ? startAfter(lastKey) : undefined,
+      limitToFirst(PAGE_LIMIT)
+    );
+  }
+
+  switch (activeFilter) {
+    case "language":
+      return query(
+        teachersRef,
+        orderByChild("language"),
+        equalTo(value),
+        lastKey ? startAfter(lastKey) : undefined,
+        limitToFirst(PAGE_LIMIT)
+      );
+
+    case "level":
+      return query(
+        teachersRef,
+        orderByChild("level"),
+        equalTo(value),
+        lastKey ? startAfter(lastKey) : undefined,
+        limitToFirst(PAGE_LIMIT)
+      );
+
+    case "price":
+      return query(
+        teachersRef,
+        orderByChild("price"),
+        endAt(value),
+        lastKey ? startAfter(lastKey) : undefined,
+        limitToFirst(PAGE_LIMIT)
+      );
+
+    default:
+      return query(
+        teachersRef,
+        orderByKey(),
+        lastKey ? startAfter(lastKey) : undefined,
+        limitToFirst(PAGE_LIMIT)
+      );
+  }
 };
 
 export const fetchTeachers = createAsyncThunk(
   "teachers/fetchInitial",
-  async () => {}
+  async () => {
+    const teachersRef = ref(database, "teachers");
+    const query = query(teachersRef, orderByKey(), limitToFirst(4));
+    const response = await get(query);
+    if (!response.exists()) {
+      return { teachers: [], lastKey: null };
+    }
+
+    const data = Object.entries(response.val());
+    const teachers = data.map(([id, teacherInfo]) => ({ id, ...teacherInfo }));
+
+    return {
+      teachers: teachers,
+      lastKey: data.at(-1)[0],
+      hasMore: data.length === 4,
+    };
+  }
 );
-export const fetchMoreTeachers = createAsyncThunk();
+export const fetchMoreTeachers = createAsyncThunk(
+  "teachers/fetchMore",
+  async (_, thunkAPI) => {
+    const { lastKey, hasMore, loading } = thunkAPI.getState().teachers;
+
+    if (!hasMore || loading) return thunkAPI.rejectWithValue();
+
+    const teachersRef = ref(database, "teachers");
+    const query = query(
+      teachersRef,
+      orderByKey(),
+      startAfter(lastKey),
+      limitToFirst(4)
+    );
+    const response = await get(query);
+    if (!response.exists()) {
+      return { teachers: [], hasMore: false };
+    }
+    const data = Object.entries(response.val());
+    const teachers = data.map(([id, teacherInfo]) => ({ id, ...teacherInfo }));
+    return {
+      teachers: teachers,
+      lastKey: data.at(-1)[0],
+      hasMore: data.length === 4,
+    };
+  }
+);
 
 const teachersSlice = createSlice({
   name: "teachers",
@@ -30,9 +131,38 @@ const teachersSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
-    setFilters(state, action) {
-      state.filters = action.payload;
-    },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTeachers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTeachers.fulfilled, (state, action) => {
+        state.teachers = action.payload.teachers;
+        state.lastKey = action.payload.lastKey;
+        state.hasMore = action.payload.hasMore;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchTeachers.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(fetchMoreTeachers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMoreTeachers.fulfilled, (state, action) => {
+        state.teachers = [...state.teachers, ...action.payload.teachers];
+        state.lastKey = action.payload.lastKey;
+        state.hasMore = action.payload.hasMore;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchMoreTeachers.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+  },
 });
+export const { resetTeachers } = teachersSlice.actions;
+export default teachersSlice.reducer;

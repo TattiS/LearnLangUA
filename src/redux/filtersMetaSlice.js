@@ -15,9 +15,9 @@ export const fetchFiltersMeta = createAsyncThunk(
   async () => {
     const metaRef = ref(database, "meta");
 
-    const snapshot = await get(metaRef);
+    const result = await get(metaRef);
 
-    if (!snapshot.exists()) {
+    if (!result.exists()) {
       return {
         languages: [],
         levels: [],
@@ -25,7 +25,7 @@ export const fetchFiltersMeta = createAsyncThunk(
       };
     }
 
-    const data = snapshot.val();
+    const data = result.val();
 
     return {
       languages: data.languages || [],
@@ -46,7 +46,7 @@ const filtersMetaSlice = createSlice({
       .addCase(fetchFiltersMeta.fulfilled, (state, action) => {
         state.languages = action.payload.languages;
         state.levels = action.payload.levels;
-        state.price_per_hour = action.payload.price_per_hour;
+        state.prices = action.payload.prices;
         state.loading = false;
         state.error = null;
       })
@@ -56,3 +56,4 @@ const filtersMetaSlice = createSlice({
       });
   },
 });
+export default filtersMetaSlice.reducer;
