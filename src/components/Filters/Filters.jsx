@@ -92,7 +92,11 @@ const Filters = () => {
             ))}
           </select>
         </div>
-        <button type="button" onClick={resetHandler}>
+        <button
+          type="button"
+          disabled={!values.language && !values.level && !values.price}
+          onClick={resetHandler}
+        >
           Reset filters
         </button>
       </form>
