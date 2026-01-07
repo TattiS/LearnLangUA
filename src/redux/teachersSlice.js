@@ -3,9 +3,7 @@ import {
   ref,
   get,
   query,
-  orderByChild,
   orderByKey,
-  equalTo,
   startAfter,
   limitToFirst,
 } from "firebase/database";
@@ -21,19 +19,18 @@ const initialState = {
 
 const PAGE_LIMIT = 4;
 
-export const buildTeachersQuery = ({ filter, lastKey, pageSize }) => {
+export const buildTeachersQuery = ({ filters, lastKey, pageSize }) => {
   const teachersRef = ref(database, "teachers");
 
   const constraints = [];
 
   if (
-    filter?.field &&
-    filter.value !== undefined &&
-    filter.value !== null &&
-    filter.value !== ""
+    filters &&
+    (filters.language !== null ||
+      filters.level !== null ||
+      filters.price !== null)
   ) {
-    constraints.push(orderByChild(filter.field));
-    constraints.push(equalTo(filter.value));
+    constraints.push(orderByKey());
   } else {
     constraints.push(orderByKey());
 
@@ -48,14 +45,23 @@ export const buildTeachersQuery = ({ filter, lastKey, pageSize }) => {
 
   return query(teachersRef, ...constraints);
 };
+const filterTeachers = (teachers, values) => {
+  const { language, level, price } = values;
+  return teachers.filter((teacher) => {
+    let priceMatch = !price ? true : teacher.price_per_hour <= price;
+    let languageMatch = !language ? true : teacher.languages.includes(language);
+    let levelMatch = !level ? true : teacher.levels.includes(level);
+    return priceMatch && languageMatch && levelMatch;
+  });
+};
 
 export const fetchTeachers = createAsyncThunk(
   "teachers/fetchInitial",
   async (_, thunkAPI) => {
     const { activeFilter, values } = thunkAPI.getState().filters;
-    const filterValue = activeFilter ? values[activeFilter] : null;
+    const filterValues = activeFilter ? values : null;
     const teachersQuery = buildTeachersQuery({
-      filter: activeFilter ? { field: activeFilter, value: filterValue } : null,
+      filters: filterValues,
       pageSize: PAGE_LIMIT,
     });
     const response = await get(teachersQuery);
@@ -65,7 +71,13 @@ export const fetchTeachers = createAsyncThunk(
 
     const data = Object.entries(response.val());
     const teachers = data.map(([id, teacherInfo]) => ({ id, ...teacherInfo }));
-
+    if (activeFilter) {
+      return {
+        teachers: filterTeachers(teachers, values),
+        lastKey: data.at(-1)[0],
+        hasMore: false,
+      };
+    }
     return {
       teachers: teachers,
       lastKey: data.at(-1)[0],

@@ -15,10 +15,16 @@ const filtersSlice = createSlice({
   reducers: {
     setFilter(state, action) {
       const { type, value } = action.payload;
+      if (type && !value) {
+        state.values[type] = null;
+        const activeFilter = Object.keys(state.values).find(
+          (key) => state.values[key] != null
+        );
+        state.activeFilter = activeFilter || null;
+        return;
+      }
       state.activeFilter = type;
-      Object.keys(state.values).forEach((key) => {
-        state.values[key] = key === type ? value : null;
-      });
+      state.values[type] = value;
     },
     resetFilters(state) {
       state.activeFilter = null;
