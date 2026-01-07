@@ -21,69 +21,13 @@ const initialState = {
 
 const PAGE_LIMIT = 4;
 
-// const buildTeachersQuery = ({ activeFilter, value, lastKey = null }) => {
-//   const teachersRef = ref(database, "teachers");
-
-//   if (!activeFilter) {
-//     return query(
-//       teachersRef,
-//       orderByKey(),
-//       lastKey ? startAfter(lastKey) : undefined,
-//       limitToFirst(PAGE_LIMIT)
-//     );
-//   }
-
-//   switch (activeFilter) {
-//     case "language":
-//       return query(
-//         teachersRef,
-//         orderByChild("language"),
-//         equalTo(value),
-//         lastKey ? startAfter(lastKey) : undefined,
-//         limitToFirst(PAGE_LIMIT)
-//       );
-
-//     case "level":
-//       return query(
-//         teachersRef,
-//         orderByChild("level"),
-//         equalTo(value),
-//         lastKey ? startAfter(lastKey) : undefined,
-//         limitToFirst(PAGE_LIMIT)
-//       );
-
-//     case "price":
-//       return query(
-//         teachersRef,
-//         orderByChild("price"),
-//         endAt(value),
-//         lastKey ? startAfter(lastKey) : undefined,
-//         limitToFirst(PAGE_LIMIT)
-//       );
-
-//     default:
-//       return query(
-//         teachersRef,
-//         orderByKey(),
-//         lastKey ? startAfter(lastKey) : undefined,
-//         limitToFirst(PAGE_LIMIT)
-//       );
-//   }
-// };
-
-export const buildTeachersQuery = ({
-  filter,
-  lastKey,
-  pageSize = PAGE_LIMIT,
-}) => {
+export const buildTeachersQuery = ({ filter, lastKey, pageSize }) => {
   const teachersRef = ref(database, "teachers");
 
   const constraints = [];
 
   if (
-    filter &&
-    typeof filter.field === "string" &&
-    filter.field.length > 0 &&
+    filter?.field &&
     filter.value !== undefined &&
     filter.value !== null &&
     filter.value !== ""
@@ -92,13 +36,13 @@ export const buildTeachersQuery = ({
     constraints.push(equalTo(filter.value));
   } else {
     constraints.push(orderByKey());
-  }
 
-  if (lastKey) {
-    constraints.push(startAfter(lastKey));
-  }
+    if (lastKey) {
+      constraints.push(startAfter(lastKey));
+    }
 
-  constraints.push(limitToFirst(pageSize));
+    constraints.push(limitToFirst(pageSize));
+  }
 
   console.log("RTDB constraints:", constraints);
 
@@ -108,14 +52,11 @@ export const buildTeachersQuery = ({
 export const fetchTeachers = createAsyncThunk(
   "teachers/fetchInitial",
   async (_, thunkAPI) => {
-    // const teachersRef = ref(database, "teachers");
-    // const query = query(teachersRef, orderByKey(), limitToFirst(4));
-
     const { activeFilter, values } = thunkAPI.getState().filters;
     const filterValue = activeFilter ? values[activeFilter] : null;
     const teachersQuery = buildTeachersQuery({
-      activeFilter,
-      value: filterValue,
+      filter: activeFilter ? { field: activeFilter, value: filterValue } : null,
+      pageSize: PAGE_LIMIT,
     });
     const response = await get(teachersQuery);
     if (!response.exists()) {
@@ -136,17 +77,17 @@ export const fetchTeachers = createAsyncThunk(
 export const fetchMoreTeachers = createAsyncThunk(
   "teachers/fetchMore",
   async (_, thunkAPI) => {
-    const { lastKey, hasMore, loading } = thunkAPI.getState().teachers;
+    const { lastKey, hasMore } = thunkAPI.getState().teachers;
 
-    if (!hasMore || loading) return thunkAPI.rejectWithValue();
+    if (!hasMore) return thunkAPI.rejectWithValue();
 
     const { activeFilter, values } = thunkAPI.getState().filters;
     const filterValue = activeFilter ? values[activeFilter] : null;
 
     const teacherQuery = buildTeachersQuery({
-      activeFilter,
-      value: filterValue,
+      filter: activeFilter ? { field: activeFilter, value: filterValue } : null,
       lastKey,
+      pageSize: PAGE_LIMIT,
     });
     const response = await get(teacherQuery);
     if (!response.exists()) {
