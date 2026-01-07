@@ -1,23 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import css from "./Filters.module.css";
-import { setFilter } from "../../redux/filtersSlice";
-import { resetTeachers, fetchTeachers } from "../../redux/teachersSlice";
+import { setFilter, resetFilters } from "../../redux/filtersSlice";
 import {
   selectMetaLanguages,
   selectMetaLevels,
   selectMetaPrices,
 } from "../../redux/filtersMetaSelectors";
+import { selectFilterValues } from "../../redux/filtersSelectors";
+
 const Filters = () => {
   const languages = useSelector(selectMetaLanguages);
   const levels = useSelector(selectMetaLevels);
   const prices = useSelector(selectMetaPrices);
 
+  const values = useSelector(selectFilterValues);
+
   const dispatch = useDispatch();
   const filterChangeHandler = (e) => {
-    const { type, value } = e.target;
-    dispatch(setFilter({ type, value }));
-    dispatch(resetTeachers());
-    dispatch(fetchTeachers());
+    const { name, value } = e.target;
+    dispatch(setFilter({ type: name, value }));
+  };
+  const resetHandler = () => {
+    dispatch(resetFilters());
   };
 
   return (
@@ -32,6 +36,7 @@ const Filters = () => {
             id="filter-language"
             name="language"
             className={css.select}
+            value={values.language || ""}
             onChange={filterChangeHandler}
           >
             <option value="">Select language</option>
@@ -53,6 +58,7 @@ const Filters = () => {
             id="filter-level"
             name="level"
             className={css.select}
+            value={values.level || ""}
             onChange={filterChangeHandler}
           >
             <option value="">Select level</option>
@@ -74,6 +80,7 @@ const Filters = () => {
             id="filter-price"
             name="price"
             className={css.select}
+            value={values.price || ""}
             onChange={filterChangeHandler}
           >
             <option value="">Any</option>
@@ -85,6 +92,9 @@ const Filters = () => {
             ))}
           </select>
         </div>
+        <button type="button" onClick={resetHandler}>
+          Reset filters
+        </button>
       </form>
     </section>
   );

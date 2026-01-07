@@ -1,6 +1,14 @@
 import css from "./TeachersList.module.css";
 import TeacherCard from "../TeacherCard/TeacherCard";
-const TeachersList = ({ teachers = [] }) => {
+import { selectTeachers } from "../../redux/teachersSelectors";
+import { useSelector } from "react-redux";
+const TeachersList = () => {
+  const teachers = useSelector(selectTeachers);
+
+  if (!teachers.length) {
+    return <p>No teachers found</p>;
+  }
+
   return (
     <>
       <div>TeachersList</div>
