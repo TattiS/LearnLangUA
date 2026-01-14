@@ -5,6 +5,8 @@ import { resetTeachers, fetchTeachers } from "../../redux/teachersSlice";
 import Filters from "../../components/Filters/Filters";
 import TeachersList from "../../components/TeachersList/TeachersList";
 import LoadMore from "../../components/LoadMore/LoadMore";
+import clsx from "clsx";
+import css from "./TeachersPage.module.css";
 
 const TeachersPage = () => {
   const filters = useSelector(selectFiltersState);
@@ -14,12 +16,11 @@ const TeachersPage = () => {
     dispatch(fetchTeachers());
   }, [filters, dispatch]);
   return (
-    <>
-      <h1>Teachers Page</h1>
+    <div className={clsx(css.section, css.teachersPageWrapper, "container")}>
       <Filters />
       <TeachersList />
-      <LoadMore />
-    </>
+      <LoadMore className={css.loadMore} />
+    </div>
   );
 };
 export default TeachersPage;

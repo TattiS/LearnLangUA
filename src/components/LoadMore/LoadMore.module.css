@@ -1,0 +1,16 @@
+.loadMore {
+  width: 183px;
+  display: inline-flex;
+  margin-top: 32px;
+  padding: 16px 48px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: #f4c550;
+  color: #121417;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.56;
+}

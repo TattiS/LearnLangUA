@@ -28,14 +28,28 @@ article {
 .teacherCardAvatarIcon {
   position: absolute;
   top: 19px;
-  right: 17px;
+  right: 16px;
   stroke: var(--color-bg-white, #ffffff);
-  fill: var(--color-text-green, #38cd3e);
+  color: var(--color-text-green, #38cd3e);
 }
 
 .contentCardWrapper {
-  position: relative;
-  width: 500px;
-  height: 500px;
-  background-color: lightsalmon;
+  width: 100%;
+  border: 1px solid sandybrown;
+}
+
+.contentCardHeaderTxtWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #121417;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+}
+
+.contentCardHeaderText span {
+  color: var(--color-text-green, #38cd3e);
 }

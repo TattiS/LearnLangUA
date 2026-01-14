@@ -1,0 +1,11 @@
+.teachersPageWrapper {
+  width: 1440px;
+  padding: 96px 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+.loadMore {
+  margin-top: 32px;
+}
