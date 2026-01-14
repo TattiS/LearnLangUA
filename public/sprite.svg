@@ -1,4 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="icon-dot" viewBox="0 0 12 12" fill="none">
+<circle cx="6" cy="6" r="6" fill="white"/>
+<circle cx="6" cy="6" r="4" fill="#38CD3E"/>
+</symbol>
 <symbol id="icon-close" viewBox="0 0 32 32">
   <path d="M24 8L8 24" stroke="#121417" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M8 8L24 24" stroke="#121417" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>

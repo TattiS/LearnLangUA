@@ -11,14 +11,15 @@ const TeachersList = () => {
 
   return (
     <>
-      <div>TeachersList</div>
-      <ul>
-        {teachers.map((teacher) => (
-          <li key={teacher.id} className={css.teacherCard}>
-            <TeacherCard teacher={teacher} />
-          </li>
-        ))}
-      </ul>
+      <div className={css.teacherListWrapper}>
+        <ul className={css.teacherList}>
+          {teachers.map((teacher) => (
+            <li key={teacher.id} className={css.teacherCard}>
+              <TeacherCard teacher={teacher} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 };
