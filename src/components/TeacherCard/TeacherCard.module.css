@@ -32,24 +32,83 @@ article {
   stroke: var(--color-bg-white, #ffffff);
   color: var(--color-text-green, #38cd3e);
 }
-
+.contentCardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.contentCardHeaderTitle {
+  color: #8a8a89;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+}
 .contentCardWrapper {
   width: 100%;
   border: 1px solid sandybrown;
 }
 
-.contentCardHeaderTxtWrapper {
+.contentCardHeaderList {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  column-gap: 32px;
   color: #121417;
   font-family: Roboto;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 24px; /* 150% */
+  line-height: 1.5;
 }
-
-.contentCardHeaderText span {
+.contentCardHeaderList li {
+  position: relative;
+}
+.contentCardHeaderList li:first-child {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 8px;
+  justify-content: center;
+}
+.contentCardHeaderList li:nth-child(3) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 8px;
+  justify-content: center;
+}
+.contentCardHeaderList li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 16px;
+  background-color: rgba(18, 20, 23, 0.2);
+}
+.contentCardHeaderItem span {
   color: var(--color-text-green, #38cd3e);
+}
+.teacherCardBookIcon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--color-text, #121417);
+}
+.teacherCardFavoriteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.teacherCardFavBtnIcon {
+  width: 22.645px;
+  height: 19.751px;
+  stroke-width: 2px;
+  stroke: #121417;
+}
+.teacherCardFavBtnIcon.isActive {
+  stroke: #f4c550;
+  fill: #f4c550;
 }
