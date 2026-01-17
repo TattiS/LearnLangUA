@@ -1,10 +1,8 @@
 import css from "./TeachersList.module.css";
 import TeacherCard from "../TeacherCard/TeacherCard";
-import { selectTeachers } from "../../redux/teachersSelectors";
 import { selectIsAuthorized } from "../../redux/authSelectors";
 import { useSelector } from "react-redux";
-const TeachersList = () => {
-  const teachers = useSelector(selectTeachers);
+const TeachersList = ({ teachers }) => {
   const isAuthorized = useSelector(selectIsAuthorized);
   if (!teachers.length) {
     return <p>No teachers found</p>;

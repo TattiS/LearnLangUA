@@ -95,6 +95,7 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
           <h2
             className={css.teacherCardName}
           >{`${teacher.name} ${teacher.surname}`}</h2>
+          <div></div>
         </div>
       </article>
     </>
