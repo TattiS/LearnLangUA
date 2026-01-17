@@ -35,6 +35,7 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
 
     saveFavorites(updatedFavorites);
   };
+  const readClickHandler = () => {};
   return (
     <>
       <article>
@@ -83,7 +84,7 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
               <svg
                 className={clsx(
                   css.teacherCardFavBtnIcon,
-                  isFavorite && css.isActive
+                  isFavorite && css.isActive,
                 )}
                 width="25"
                 height="22"
@@ -95,7 +96,39 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
           <h2
             className={css.teacherCardName}
           >{`${teacher.name} ${teacher.surname}`}</h2>
-          <div></div>
+          <div className={css.teacherCardInfoWrapper}>
+            <p className={css.teacherCardInfoText}>
+              <span>Speaks:</span>
+              {teacher.languages.join(", ")}
+            </p>
+            <p className={css.teacherCardInfoText}>
+              <span>Lesson Info:</span>
+              {teacher.lesson_info}
+            </p>
+            <p className={css.teacherCardInfoText}>
+              <span>Conditions:</span>
+              {teacher.conditions.join(". ")}
+            </p>
+            <button
+              className={css.teacherCardInfoMoreBtn}
+              type="button"
+              onClick={readClickHandler}
+            >
+              Read more
+            </button>
+            <p className={css.teacherCardInfoMoreText}>{teacher.experience}</p>
+            <ul className={css.teacherCardReviewsList}>
+              {teacher.reviews.map((review) => (
+                <li key={review} className={css.teacherCardReviewsItem}>
+                  {review.reviewer_name}
+                  {review.reviewer_rating} {review.comment}
+                </li>
+              ))}
+            </ul>
+            <button className={css.teacherCardBookBtn} type="button">
+              Book trial lesson
+            </button>
+          </div>
         </div>
       </article>
     </>
