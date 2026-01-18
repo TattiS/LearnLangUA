@@ -8,6 +8,7 @@ import { getFavorites, saveFavorites } from "../../features/LSHelper";
 const TeacherCard = ({ teacher, isAuthorized }) => {
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     if (!isAuthorized) return;
@@ -35,7 +36,9 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
 
     saveFavorites(updatedFavorites);
   };
-  const readClickHandler = () => {};
+  const readMoreClickHandler = () => {
+    setIsExpanded(!isExpanded);
+  };
   return (
     <>
       <article>
@@ -107,27 +110,43 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
             </p>
             <p className={css.teacherCardInfoText}>
               <span>Conditions:</span>
-              {teacher.conditions.join(". ")}
+              {teacher.conditions.join(" ")}
             </p>
-            <button
-              className={css.teacherCardInfoMoreBtn}
-              type="button"
-              onClick={readClickHandler}
-            >
-              Read more
-            </button>
-            <p className={css.teacherCardInfoMoreText}>{teacher.experience}</p>
-            <ul className={css.teacherCardReviewsList}>
-              {teacher.reviews.map((review) => (
-                <li key={review} className={css.teacherCardReviewsItem}>
-                  {review.reviewer_name}
-                  {review.reviewer_rating} {review.comment}
-                </li>
-              ))}
-            </ul>
-            <button className={css.teacherCardBookBtn} type="button">
-              Book trial lesson
-            </button>
+            {!isExpanded && (
+              <button
+                className={css.teacherCardInfoMoreBtn}
+                type="button"
+                onClick={readMoreClickHandler}
+              >
+                Read more
+              </button>
+            )}
+            {isExpanded && (
+              <div className={css.teacherCardInfoMoreWrapper}>
+                <p className={css.teacherCardInfoMoreText}>
+                  {teacher.experience}
+                </p>
+                <ul className={css.teacherCardReviewsList}>
+                  {teacher.reviews.map((review) => (
+                    <li key={review} className={css.teacherCardReviewsItem}>
+                      <p>{review.reviewer_name}</p>
+                      <p>{review.reviewer_rating}</p>
+                      <p>{review.comment}</p>
+                    </li>
+                  ))}
+                </ul>
+                <ul className={css.teacherCardLevelsList}>
+                  {teacher.levels.map((level) => (
+                    <li key={level} className={css.teacherCardLevelsItem}>
+                      {level}
+                    </li>
+                  ))}
+                </ul>
+                <button className={css.teacherCardBookBtn} type="button">
+                  Book trial lesson
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </article>
