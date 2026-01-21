@@ -4,6 +4,7 @@ import { openModal } from "../../redux/authSlice.js";
 import css from "./TeacherCard.module.css";
 import clsx from "clsx";
 import { getFavorites, saveFavorites } from "../../features/LSHelper";
+import getInitials from "../../features/getInitials.js";
 
 const TeacherCard = ({ teacher, isAuthorized }) => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
   const readMoreClickHandler = () => {
     setIsExpanded(!isExpanded);
   };
+
   return (
     <>
       <article>
@@ -129,8 +131,29 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
                 <ul className={css.teacherCardReviewsList}>
                   {teacher.reviews.map((review) => (
                     <li key={review} className={css.teacherCardReviewsItem}>
-                      <p>{review.reviewer_name}</p>
-                      <p>{review.reviewer_rating}</p>
+                      <div className={css.reviewWrapper}>
+                        <div
+                          className={css.reviewerAvatar}
+                          aria-label="Reviewer avatar"
+                        >
+                          {getInitials(review.reviewer_name)}
+                        </div>
+                        <div className={css.reviewerInfoWrapper}>
+                          <p className={css.reviewerName}>
+                            {review.reviewer_name}
+                          </p>
+                          <div className={css.reviewerRatingWrapper}>
+                            <svg
+                              className={css.teacherCardStarIcon}
+                              width="16"
+                              height="16"
+                            >
+                              <use href="/sprite.svg#icon-star" />
+                            </svg>
+                            <p>{review.reviewer_rating.toFixed(1)}</p>
+                          </div>
+                        </div>
+                      </div>
                       <p>{review.comment}</p>
                     </li>
                   ))}

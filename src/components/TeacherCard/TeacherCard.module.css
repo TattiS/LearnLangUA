@@ -112,3 +112,17 @@ article {
   stroke: #f4c550;
   fill: #f4c550;
 }
+
+.reviewerAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #fbe9ba;
+  color: #121417;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+}
