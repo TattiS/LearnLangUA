@@ -40,7 +40,7 @@ const HomePage = () => {
           </div>
           <div className={css.heroImgWrapper}>
             <img
-              src="../../../public/hero.png"
+              src="/hero.png"
               alt="Hero Illustration"
               width={391}
               height={450}
