@@ -2,7 +2,7 @@ import css from "./TeachersList.module.css";
 import TeacherCard from "../TeacherCard/TeacherCard";
 import { selectIsAuthorized } from "../../redux/authSelectors";
 import { useSelector } from "react-redux";
-const TeachersList = ({ teachers }) => {
+const TeachersList = ({ teachers, onBookClick }) => {
   const isAuthorized = useSelector(selectIsAuthorized);
   if (!teachers.length) {
     return <p>No teachers found</p>;
@@ -14,7 +14,11 @@ const TeachersList = ({ teachers }) => {
         <ul className={css.teacherList}>
           {teachers.map((teacher) => (
             <li key={teacher.id} className={css.teacherCard}>
-              <TeacherCard teacher={teacher} isAuthorized={isAuthorized} />
+              <TeacherCard
+                teacher={teacher}
+                isAuthorized={isAuthorized}
+                onBookClick={onBookClick}
+              />
             </li>
           ))}
         </ul>

@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { getFavorites, saveFavorites } from "../../features/LSHelper";
 import getInitials from "../../features/getInitials.js";
 
-const TeacherCard = ({ teacher, isAuthorized }) => {
+const TeacherCard = ({ teacher, isAuthorized, onBookClick }) => {
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -130,7 +130,10 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
                 </p>
                 <ul className={css.teacherCardReviewsList}>
                   {teacher.reviews.map((review) => (
-                    <li key={review} className={css.teacherCardReviewsItem}>
+                    <li
+                      key={`${review.reviewer_name}-${review.comment}`}
+                      className={css.teacherCardReviewsItem}
+                    >
                       <div className={css.reviewWrapper}>
                         <div
                           className={css.reviewerAvatar}
@@ -160,12 +163,19 @@ const TeacherCard = ({ teacher, isAuthorized }) => {
                 </ul>
                 <ul className={css.teacherCardLevelsList}>
                   {teacher.levels.map((level) => (
-                    <li key={level} className={css.teacherCardLevelsItem}>
+                    <li
+                      key={`${teacher.id}-${level}`}
+                      className={css.teacherCardLevelsItem}
+                    >
                       {level}
                     </li>
                   ))}
                 </ul>
-                <button className={css.teacherCardBookBtn} type="button">
+                <button
+                  className={css.teacherCardBookBtn}
+                  type="button"
+                  onClick={() => onBookClick(teacher)}
+                >
                   Book trial lesson
                 </button>
               </div>
