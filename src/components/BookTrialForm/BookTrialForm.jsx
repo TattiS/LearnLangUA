@@ -122,7 +122,7 @@ const BookTrialForm = ({ teacher, onClose }) => {
           />
         </div>
 
-        <button type="submit" className="primaryButton">
+        <button type="submit" className="primaryButton" onClose={onClose}>
           Book
         </button>
       </form>
